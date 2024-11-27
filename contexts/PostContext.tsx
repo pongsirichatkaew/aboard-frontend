@@ -11,6 +11,7 @@ interface PostsContextProps {
   posts: PostItem[];
   fetchPosts: () => Promise<void>;
   fetchMyPosts: () => Promise<void>;
+  fetchPostById: (id: number) => Promise<PostItem>;
   addPost: (newPost: PostRequest) => Promise<void>;
   deletePost: (id: number) => Promise<void>;
   editPost: (id: number, updatePost: PatchRequest) => Promise<void>;
@@ -40,6 +41,11 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
     setPosts(response.data);
   };
 
+  const fetchPostById = async (id: number) => {
+    const { data } = await get(`/posts/${id}`);
+    return data;
+  };
+
   const addPost = async (newPost: PostRequest) => {
     await post(`/posts`, newPost, token);
     await fetchPosts();
@@ -56,7 +62,7 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <PostsContext.Provider value={{ posts, fetchPosts, fetchMyPosts, addPost, editPost, deletePost }}>
+    <PostsContext.Provider value={{ posts, fetchPosts, fetchMyPosts, fetchPostById, addPost, editPost, deletePost }}>
       {children}
     </PostsContext.Provider>
   );

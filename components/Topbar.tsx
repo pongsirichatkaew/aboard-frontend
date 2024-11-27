@@ -71,7 +71,7 @@ const TopBar = () => {
             className='text-white self-start p-4 focus:outline-none'
             onClick={() => setIsMenuOpen(false)} // Close the menu
           >
-            <Image src='./icons/left-arrow.svg' alt='Menu' width={24} height={24} />
+            <Image src='./icons/right-arrow.svg' alt='Menu' width={24} height={24} />
           </button>
 
           <div className='flex items-center space-x-4 ml-auto px-6'>

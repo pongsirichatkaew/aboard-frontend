@@ -24,6 +24,7 @@ export interface PostUser {
 }
 
 export interface PostComments {
+  id: number;
   message: string;
   user: PostUser;
 }
