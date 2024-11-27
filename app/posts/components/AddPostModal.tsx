@@ -3,13 +3,25 @@
 import { PostRequest } from '@/api/dtos/post-request.dto';
 import Button from '@/components/Button';
 import Modal from '@/components/Modal';
+import { useError } from '@/contexts/ErrorContext';
 import { usePosts } from '@/contexts/PostContext';
 import React, { useState } from 'react';
 import { Community } from '../enums/community.enum';
+import Image from 'next/image';
+interface AddEditPostModalProps {
+  isEditing?: boolean;
+  initialData?: PostRequest; // Optional initial data for editing
+  postId?: number; // Optional postId for editing
+}
 
-const AddPostModal = () => {
+const AddEditPostModal: React.FC<AddEditPostModalProps> = ({
+  isEditing = false,
+  initialData = { community: '', title: '', content: '' },
+  postId, // Required when editing
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const { addPost } = usePosts();
+  const { editPost, addPost } = usePosts();
+  const { setError } = useError();
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -17,27 +29,42 @@ const AddPostModal = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const newPost: PostRequest = {
+    const post: PostRequest = {
       community: formData.get('community') as Community,
       title: formData.get('title')?.toString() ?? '',
       content: formData.get('content')?.toString() ?? '',
     };
 
-    await addPost(newPost);
-    handleClose(); // Close modal after submission
+    if (isEditing) {
+      if (!postId) {
+        setError('postId is required for editing');
+        return;
+      }
+      await editPost(postId, post);
+    } else {
+      await addPost(post);
+    }
+    handleClose();
   };
 
   return (
     <div>
-      {/* Add Post Button */}
-      <Button onClick={handleOpen}>Add Post</Button>
+      {/* Button to Open Modal */}
+      {isEditing ? (
+        <Image src='./icons/pencil.svg' onClick={handleOpen} alt='Edit Menu' width={24} height={24} />
+      ) : (
+        <Button onClick={handleOpen}>{'Add Post'}</Button>
+      )}
 
       {/* Modal */}
-      <Modal isOpen={isModalOpen} onClose={handleClose} title='Create Post'>
+      <Modal isOpen={isModalOpen} onClose={handleClose} title={isEditing ? 'Edit Post' : 'Create Post'}>
         <form onSubmit={handleSubmit} className='space-y-4'>
           {/* Dropdown for Community */}
           <div>
-            <select name='community' className='w-full border border-gray-300 rounded-lg px-3 py-2'>
+            <select
+              name='community'
+              className='w-full border border-gray-300 rounded-lg px-3 py-2'
+              defaultValue={initialData.community}>
               <option value=''>Choose a community</option>
               {Object.entries(Community).map(([key, value]) => (
                 <option key={key} value={key}>
@@ -53,6 +80,7 @@ const AddPostModal = () => {
               name='title'
               type='text'
               placeholder='Title'
+              defaultValue={initialData.title}
               className='w-full border border-gray-300 rounded-lg px-3 py-2'
             />
           </div>
@@ -62,6 +90,7 @@ const AddPostModal = () => {
             <textarea
               name='content'
               placeholder="What's on your mind..."
+              defaultValue={initialData.content}
               className='w-full border border-gray-300 rounded-lg px-3 py-2'
               rows={4}
             />
@@ -72,7 +101,7 @@ const AddPostModal = () => {
             <Button onClick={handleClose} variant='border-green'>
               Cancel
             </Button>
-            <Button type='submit'>Post</Button>
+            <Button type='submit'>{isEditing ? 'Save Changes' : 'Post'}</Button>
           </div>
         </form>
       </Modal>
@@ -80,4 +109,4 @@ const AddPostModal = () => {
   );
 };
 
-export default AddPostModal;
+export default AddEditPostModal;

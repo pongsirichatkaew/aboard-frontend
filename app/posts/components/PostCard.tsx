@@ -3,6 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import AddEditPostModal from './AddPostModal';
+import { Community } from '../enums/community.enum';
 
 interface PostProps {
   postId: number;
@@ -37,12 +39,10 @@ const Post: React.FC<PostProps> = ({ username, postId, community, title, content
   const router = useRouter();
 
   const redirectToPostDetail = () => {
-    router.push(`posts/${postId}`);
+    router.replace(`/posts/${postId}`);
   };
   return (
-    <div
-      className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer'
-      onClick={redirectToPostDetail}>
+    <div className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6'>
       <div className='flex flex-col flex-grow'>
         {/* User section */}
         <div className='flex justify-between items-center'>
@@ -59,7 +59,15 @@ const Post: React.FC<PostProps> = ({ username, postId, community, title, content
           {editable && (
             <div className='flex space-x-4'>
               <button>
-                <Image src='./icons/pencil.svg' alt='Edit Menu' width={24} height={24} />
+                <AddEditPostModal
+                  isEditing={true}
+                  postId={postId}
+                  initialData={{
+                    community: community as Community,
+                    title,
+                    content,
+                  }}
+                />
               </button>
               <button>
                 <Image src='./icons/bin.svg' alt='Delete Menu' width={24} height={24} />
@@ -69,7 +77,7 @@ const Post: React.FC<PostProps> = ({ username, postId, community, title, content
         </div>
 
         {/* Post Content */}
-        <div className='flex items-center justify-between mt-2'>
+        <div className='flex items-center justify-between mt-2 '>
           <span className='bg-gray-badge text-badge text-sm font-medium py-1 px-3 rounded-full shadow-sm'>
             {community}
           </span>
@@ -78,7 +86,7 @@ const Post: React.FC<PostProps> = ({ username, postId, community, title, content
         <p className='text-sm md:text-post text-gray-600 mt-2 line-clamp-2'>{content}</p>
 
         {/* Comments */}
-        <div className='mt-4 flex items-center space-x-2 text-gray-500'>
+        <div className='mt-4 flex items-center space-x-2 text-gray-500 cursor-pointer' onClick={redirectToPostDetail}>
           <Image src='./icons/message-circle.svg' alt='MessageCircle' width={24} height={24} />
           <span className='text-sm'>{commentCount} Comments</span>
         </div>

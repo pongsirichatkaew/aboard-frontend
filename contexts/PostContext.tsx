@@ -5,12 +5,15 @@ import { PostItem } from '@/app/posts/components/PostCard';
 import { PostRequest } from '@/api/dtos/post-request.dto';
 import { useApi } from '@/api/client';
 import { useAuth } from './AuthContext';
+import { PatchRequest } from '@/api/dtos/patch-request.dto';
 
 interface PostsContextProps {
   posts: PostItem[];
   fetchPosts: () => Promise<void>;
   fetchMyPosts: () => Promise<void>;
   addPost: (newPost: PostRequest) => Promise<void>;
+  deletePost: (id: number) => Promise<void>;
+  editPost: (id: number, updatePost: PatchRequest) => Promise<void>;
 }
 
 const PostsContext = createContext<PostsContextProps | undefined>(undefined);
@@ -24,7 +27,8 @@ export const usePosts = () => {
 export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   const [posts, setPosts] = useState<PostItem[]>([]);
   const authProvider = useAuth();
-  const { get, post } = useApi();
+  const token = authProvider.token ?? '';
+  const { get, post, patch, remove } = useApi();
 
   const fetchPosts = async () => {
     const response = await get('/posts');
@@ -32,14 +36,28 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const fetchMyPosts = async () => {
-    const response = await get('/posts/me');
+    const response = await get('/posts/me', token);
     setPosts(response.data);
   };
 
   const addPost = async (newPost: PostRequest) => {
-    await post(`/posts`, newPost, authProvider.token ?? '');
+    await post(`/posts`, newPost, token);
     await fetchPosts();
   };
 
-  return <PostsContext.Provider value={{ posts, fetchPosts, fetchMyPosts, addPost }}>{children}</PostsContext.Provider>;
+  const editPost = async (id: number, updatePost: PatchRequest) => {
+    await patch(`/posts/${id}`, updatePost, token);
+    await fetchMyPosts();
+  };
+
+  const deletePost = async (id: number) => {
+    await remove(`/posts/${id}`, token);
+    await fetchMyPosts();
+  };
+
+  return (
+    <PostsContext.Provider value={{ posts, fetchPosts, fetchMyPosts, addPost, editPost, deletePost }}>
+      {children}
+    </PostsContext.Provider>
+  );
 };
