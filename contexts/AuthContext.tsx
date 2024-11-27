@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios from 'axios';
+import { signInAPI } from '@/api/auth';
 
 interface AuthState {
   isSignedIn: boolean;
@@ -22,14 +23,12 @@ const initialAuthState: AuthState = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const apiURL = process.env.NEXT_PUBLIC_API_URL;
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
 
   const signIn = async (username: string) => {
     try {
-      const response = await axios.post(`${apiURL}/users/sign-in`, { username });
+      const response = await signInAPI(username);
       const { accessToken, user } = response.data;
 
       setAuthState({

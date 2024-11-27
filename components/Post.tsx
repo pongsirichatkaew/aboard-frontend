@@ -5,18 +5,18 @@ import Image from 'next/image';
 
 interface PostProps {
   username: string;
-  category: string;
+  community: string;
   title: string;
   content: string;
   commentCount: number;
   avatarUrl?: string;
 }
 
-const Post: React.FC<PostProps> = ({ username, category, title, content, commentCount, avatarUrl }) => {
+const Post: React.FC<PostProps> = ({ username, community, title, content, commentCount, avatarUrl }) => {
   return (
     <div className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer'>
-      {/* Post Content */}
       <div className='flex flex-col flex-grow'>
+        {/* User section */}
         <div className='flex flex-row items-center mt-2 space-x-2'>
           <img
             src={avatarUrl || '/images/placeholder.jpeg'}
@@ -26,9 +26,10 @@ const Post: React.FC<PostProps> = ({ username, category, title, content, comment
           <h4 className='font-medium text-gray-300'>{username}</h4>
         </div>
 
+        {/* Post Content */}
         <div className='flex items-center justify-between mt-2'>
           <span className='bg-gray-badge text-badge text-sm font-medium py-1 px-3 rounded-full shadow-sm'>
-            {category}
+            {community}
           </span>
         </div>
         <h3 className='font-bold text-lg md:text-xl mt-2 text-post'>{title}</h3>
