@@ -12,6 +12,16 @@ const TopBar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const onClickSignOut = () => {
+    setIsMenuOpen(false);
+    signOut();
+  };
+
+  const onClickSignInRedirect = () => {
+    router.push('/sign-in');
+  };
+  
+
   const UserProfile = () => {
     return (
       <div className='hidden md:flex items-center space-x-4'>
@@ -20,7 +30,7 @@ const TopBar = () => {
         ) : (
           <button
             className='bg-green-600 px-4 py-2 rounded-lg hover:bg-green-400'
-            onClick={() => router.push('/sign-in')}>
+            onClick={() => onClickSignInRedirect()}>
             Sign In
           </button>
         )}
@@ -33,7 +43,7 @@ const TopBar = () => {
       <>
         <span>{userName}</span>
         <img src='./images/placeholder.jpeg' alt='User Profile' className='w-8 h-8 rounded-full' />
-        <button className='bg-gray-300 text-sm px-4 py-2 rounded-lg hover:bg-gray-100' onClick={() => signOut()}>
+        <button className='bg-gray-300 text-sm px-4 py-2 rounded-lg hover:bg-gray-100' onClick={() => onClickSignOut()}>
           Sign Out
         </button>
       </>
