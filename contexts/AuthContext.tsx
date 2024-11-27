@@ -7,6 +7,7 @@ import { useApi } from '@/api/client';
 
 interface AuthState {
   isSignedIn: boolean;
+  userId: number | null;
   userName: string | null;
   token: string | null;
 }
@@ -19,6 +20,7 @@ export interface AuthContextType extends AuthState {
 const initialAuthState: AuthState = {
   isSignedIn: false,
   userName: null,
+  userId: null,
   token: null,
 };
 
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setAuthState({
       isSignedIn: true,
+      userId: user.id,
       userName: user.username,
       token: accessToken,
     });

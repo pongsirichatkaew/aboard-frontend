@@ -1,5 +1,3 @@
-// utils/api.ts
-import { useAuth } from '@/contexts/AuthContext';
 import { useError } from '@/contexts/ErrorContext';
 import axios from 'axios';
 
@@ -7,12 +5,11 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-// Example of using the error context in API calls
 export const useApi = () => {
   const { setError } = useError();
-  const get = async (url: string) => {
+  const get = async (url: string, token?: string) => {
     try {
-      const response = await api.get(url);
+      const response = await api.get(url, { headers: { Authorization: `Bearer ${token}` } });
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'An unexpected error occurred';

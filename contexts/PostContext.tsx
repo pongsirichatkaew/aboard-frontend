@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState } from 'react';
 import { PostItem } from '@/app/posts/components/PostCard';
-import { createPost, getPosts } from '@/api/post/post'; // Your API endpoints
 import { PostRequest } from '@/api/dtos/post-request.dto';
 import { useApi } from '@/api/client';
 import { useAuth } from './AuthContext';
@@ -10,6 +9,7 @@ import { useAuth } from './AuthContext';
 interface PostsContextProps {
   posts: PostItem[];
   fetchPosts: () => Promise<void>;
+  fetchMyPosts: () => Promise<void>;
   addPost: (newPost: PostRequest) => Promise<void>;
 }
 
@@ -31,10 +31,15 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
     setPosts(response.data);
   };
 
+  const fetchMyPosts = async () => {
+    const response = await get('/posts/me');
+    setPosts(response.data);
+  };
+
   const addPost = async (newPost: PostRequest) => {
     await post(`/posts`, newPost, authProvider.token ?? '');
     await fetchPosts();
   };
 
-  return <PostsContext.Provider value={{ posts, fetchPosts, addPost }}>{children}</PostsContext.Provider>;
+  return <PostsContext.Provider value={{ posts, fetchPosts, fetchMyPosts, addPost }}>{children}</PostsContext.Provider>;
 };

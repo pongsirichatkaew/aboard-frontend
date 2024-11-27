@@ -6,10 +6,10 @@ import { useEffect } from 'react';
 import AddPostModal from '../components/AddPostModal';
 
 export default function PostsMePage() {
-  const { posts, fetchPosts } = usePosts();
+  const { posts, fetchMyPosts } = usePosts();
 
   useEffect(() => {
-    fetchPosts();
+    fetchMyPosts();
   }, []);
 
   return (
