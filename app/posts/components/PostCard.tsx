@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AddEditPostModal from './AddEditPostModal';
 import { Community } from '../enums/community.enum';
+import DeletePostModal from './DeleteModal';
 
 interface PostProps {
   postId: number;
@@ -58,20 +59,16 @@ const Post: React.FC<PostProps> = ({ username, postId, community, title, content
           {/* Editable section */}
           {editable && (
             <div className='flex space-x-4'>
-              <button>
-                <AddEditPostModal
-                  isEditing={true}
-                  postId={postId}
-                  initialData={{
-                    community: community as Community,
-                    title,
-                    content,
-                  }}
-                />
-              </button>
-              <button>
-                <Image src='./icons/bin.svg' alt='Delete Menu' width={24} height={24} />
-              </button>
+              <AddEditPostModal
+                isEditing={true}
+                postId={postId}
+                initialData={{
+                  community: community as Community,
+                  title,
+                  content,
+                }}
+              />
+              <DeletePostModal postId={postId} />
             </div>
           )}
         </div>

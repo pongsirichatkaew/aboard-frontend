@@ -51,9 +51,18 @@ const AddEditPostModal: React.FC<AddEditPostModalProps> = ({
     <div>
       {/* Button to Open Modal */}
       {isEditing ? (
-        <Image src='./icons/pencil.svg' onClick={handleOpen} alt='Edit Menu' width={24} height={24} />
+        <Image
+          className='cursor-pointer'
+          src='./icons/pencil.svg'
+          onClick={handleOpen}
+          alt='Edit Menu'
+          width={24}
+          height={24}
+        />
       ) : (
-        <Button onClick={handleOpen}>{'Add Post'}</Button>
+        <Button className='cursor-pointer' onClick={handleOpen}>
+          {'Add Post'}
+        </Button>
       )}
 
       {/* Modal */}
