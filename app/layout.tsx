@@ -1,3 +1,4 @@
+import { ErrorProvider } from '@/contexts/ErrorContext';
 import { PostsProvider } from '@/contexts/PostContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -28,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body>
-        <AuthProvider>
-          <PostsProvider>
-            <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</main>
-          </PostsProvider>
-        </AuthProvider>
+        <ErrorProvider>
+          <AuthProvider>
+            <PostsProvider>
+              <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</main>
+            </PostsProvider>
+          </AuthProvider>
+        </ErrorProvider>
       </body>
     </html>
   );

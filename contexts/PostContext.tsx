@@ -3,8 +3,9 @@
 import { createContext, useContext, useState } from 'react';
 import { PostItem } from '@/app/posts/components/PostCard';
 import { createPost, getPosts } from '@/api/post/post'; // Your API endpoints
-import { AuthContext, AuthContextType } from './AuthContext';
-import { PostRequest } from '@/api/post/dtos/post-request.dto';
+import { PostRequest } from '@/api/dtos/post-request.dto';
+import { useApi } from '@/api/client';
+import { useAuth } from './AuthContext';
 
 interface PostsContextProps {
   posts: PostItem[];
@@ -21,26 +22,18 @@ export const usePosts = () => {
 };
 
 export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
-  const authContext = useContext<AuthContextType | undefined>(AuthContext);
-  const accessToken = authContext?.token ?? '';
   const [posts, setPosts] = useState<PostItem[]>([]);
+  const authProvider = useAuth();
+  const { get, post } = useApi();
 
   const fetchPosts = async () => {
-    try {
-      const response = await getPosts();
-      setPosts(response.data);
-    } catch (error) {
-      console.error('Failed to fetch posts:', error);
-    }
+    const response = await get('/posts');
+    setPosts(response.data);
   };
 
   const addPost = async (newPost: PostRequest) => {
-    try {
-      await createPost(accessToken, newPost);
-      await fetchPosts();
-    } catch (error) {
-      console.error('Failed to add post:', error);
-    }
+    await post(`/posts`, newPost, authProvider.token ?? '');
+    await fetchPosts();
   };
 
   return <PostsContext.Provider value={{ posts, fetchPosts, addPost }}>{children}</PostsContext.Provider>;

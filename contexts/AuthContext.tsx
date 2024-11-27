@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios from 'axios';
 import { signInAPI } from '@/api/auth/auth';
+import { useApi } from '@/api/client';
 
 interface AuthState {
   isSignedIn: boolean;
@@ -25,21 +26,17 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);
+  const { post } = useApi();
 
   const signIn = async (username: string) => {
-    try {
-      const response = await signInAPI(username);
-      const { accessToken, user } = response.data;
+    const response = await post(`/users/sign-in`, { username });
+    const { accessToken, user } = response.data;
 
-      setAuthState({
-        isSignedIn: true,
-        userName: user.username,
-        token: accessToken,
-      });
-    } catch (error) {
-      console.error('Sign-In Failed:', error);
-      throw new Error('Failed to sign in. Please try again.');
-    }
+    setAuthState({
+      isSignedIn: true,
+      userName: user.username,
+      token: accessToken,
+    });
   };
 
   const signOut = () => {

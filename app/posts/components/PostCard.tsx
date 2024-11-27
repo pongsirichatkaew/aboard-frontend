@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Button from '@/components/Button';
 
 interface PostProps {
   postId: number;
@@ -12,6 +13,7 @@ interface PostProps {
   content: string;
   commentCount: number;
   avatarUrl?: string;
+  editable?: boolean;
 }
 
 export interface PostUser {
@@ -32,23 +34,39 @@ export interface PostItem {
   comments: PostComments[];
 }
 
-const Post: React.FC<PostProps> = ({ username, postId, community, title, content, commentCount, avatarUrl }) => {
+const Post: React.FC<PostProps> = ({ username, postId, community, title, content, commentCount, editable = false }) => {
   const router = useRouter();
 
   const redirectToPostDetail = () => {
     router.push(`posts/${postId}`);
   };
   return (
-    <div className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer' onClick={redirectToPostDetail}>
+    <div
+      className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer'
+      onClick={redirectToPostDetail}>
       <div className='flex flex-col flex-grow'>
         {/* User section */}
-        <div className='flex flex-row items-center mt-2 space-x-2'>
-          <img
-            src={avatarUrl || '/images/placeholder.jpeg'}
-            alt={`${username}'s avatar`}
-            className='w-12 h-12 md:w-16 md:h-16 rounded-full'
-          />
-          <h4 className='font-medium text-gray-300'>{username}</h4>
+        <div className='flex justify-between items-center'>
+          <div className='flex items-center space-x-4'>
+            <img
+              src={'/images/placeholder.jpeg'}
+              alt={`${username}'s avatar`}
+              className='w-12 h-12 md:w-16 md:h-16 rounded-full'
+            />
+            <h4 className='font-medium text-gray-300'>{username}</h4>
+          </div>
+
+          {/* Editable section */}
+          {editable && (
+            <div className='flex space-x-4'>
+              <button>
+                <Image src='./icons/pencil.svg' alt='Edit Menu' width={24} height={24} />
+              </button>
+              <button>
+                <Image src='./icons/bin.svg' alt='Delete Menu' width={24} height={24} />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Post Content */}

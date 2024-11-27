@@ -1,6 +1,6 @@
 'use client';
 
-import { PostRequest } from '@/api/post/dtos/post-request.dto';
+import { PostRequest } from '@/api/dtos/post-request.dto';
 import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import { usePosts } from '@/contexts/PostContext';
@@ -36,12 +36,14 @@ const AddPostModal = () => {
       <Modal isOpen={isModalOpen} onClose={handleClose} title='Create Post'>
         <form onSubmit={handleSubmit} className='space-y-4'>
           {/* Dropdown for Community */}
-          {/* TODO: */}
           <div>
             <select name='community' className='w-full border border-gray-300 rounded-lg px-3 py-2'>
               <option value=''>Choose a community</option>
-              <option value='History'>History</option>
-              <option value='community2'>Community 2</option>
+              {Object.entries(Community).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
             </select>
           </div>
 

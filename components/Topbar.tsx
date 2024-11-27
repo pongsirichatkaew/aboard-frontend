@@ -101,7 +101,7 @@ const TopBar = () => {
             <button
               className='flex items-center space-x-4 text-xl hover:text-green-300'
               onClick={() => {
-                router.push('/posts');
+                router.push('/posts/me');
                 setIsMenuOpen(false);
               }}>
               <Image src='./icons/edit.svg' alt='Edit Menu' width={24} height={24} />

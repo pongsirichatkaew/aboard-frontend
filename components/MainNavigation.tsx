@@ -9,7 +9,7 @@ const MainNavigation = () => {
 
   const menuItems = [
     { name: 'Home', icon: '/icons/home-green.svg', path: '/' },
-    { name: 'Our Blog', icon: '/icons/edit-green.svg', path: '/posts' },
+    { name: 'Our Blog', icon: '/icons/edit-green.svg', path: '/posts/me' },
   ];
 
   return (
