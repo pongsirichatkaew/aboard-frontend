@@ -3,7 +3,7 @@
 import Post, { PostItem } from '@/app/posts/components/PostCard';
 import { usePosts } from '@/contexts/PostContext';
 import { useEffect } from 'react';
-import AddPostModal from './components/AddPostModal';
+import AddPostModal from './components/AddEditPostModal';
 
 export default function PostsPage() {
   const { posts, fetchPosts } = usePosts();

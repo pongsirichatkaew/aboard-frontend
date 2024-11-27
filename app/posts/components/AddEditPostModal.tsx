@@ -10,14 +10,14 @@ import { Community } from '../enums/community.enum';
 import Image from 'next/image';
 interface AddEditPostModalProps {
   isEditing?: boolean;
-  initialData?: PostRequest; // Optional initial data for editing
-  postId?: number; // Optional postId for editing
+  initialData?: PostRequest;
+  postId?: number;
 }
 
 const AddEditPostModal: React.FC<AddEditPostModalProps> = ({
   isEditing = false,
   initialData = { community: '', title: '', content: '' },
-  postId, // Required when editing
+  postId,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { editPost, addPost } = usePosts();
