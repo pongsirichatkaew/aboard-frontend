@@ -18,9 +18,12 @@ export default {
         black: '#000000',
         white: '#ffffff',
         text: '#191919',
+        "post": '#101828',
+        "badge": "#4A4A4A",
         gray: {
           100: '#BBC2C0',
           300: '#939494',
+          badge: '#f3f3f3'
         },
         success: '#49A569',
       },
