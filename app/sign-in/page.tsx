@@ -15,18 +15,18 @@ const SignInPage = () => {
 
     try {
       await signIn(username);
-      router.push('/'); // Redirect to home after signing in
+      router.push('/posts');
     } catch (error) {
       alert('Failed to sign in. Please try again.');
     }
   };
 
   return (
-    <div className='flex min-h-screen bg-green-500'>
+    <div className='flex flex-col-reverse md:flex-row h-screen bg-green-500'>
       {/* Left Section: Sign-In Form */}
-      <div className='w-3/5 bg-green-500 flex flex-col justify-center items-start px-32'>
+      <div className='h-1/2 md:w-3/5 md:h-full bg-green-500 flex flex-col justify-center items-start px-4 lg:px-28'>
         <h1 className='text-4xl font-bold text-white mb-6'>Sign in</h1>
-        <form onSubmit={handleSubmit} className='w-full max-w-md space-y-6'>
+        <form onSubmit={handleSubmit} className='w-full max-w-lg space-y-6'>
           {/* Username Input */}
           <div>
             <input
@@ -47,7 +47,7 @@ const SignInPage = () => {
       </div>
 
       {/* Right Section: Landing Image */}
-      <div className='w-2/5 bg-green-300 flex justify-center items-center rounded-xl'>
+      <div className='md:h-full h-1/2 md:w-2/5 bg-green-300 flex justify-center items-center rounded-xl'>
         <img src='/images/aboard-landing.png' alt='Aboard Landing' className='w-1/2 h-auto object-cover' />
       </div>
     </div>
