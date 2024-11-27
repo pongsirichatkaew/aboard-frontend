@@ -1,8 +1,8 @@
 'use client';
 
 import { getPosts } from '@/api/post';
-import Post from '@/components/Post';
-import axios from 'axios';
+import MainNavigation from '@/components/MainNavigation';
+import Post, { PostItem } from '@/components/Post';
 import { useEffect, useState } from 'react';
 
 export default function PostsPage() {
@@ -22,20 +22,18 @@ export default function PostsPage() {
     fetchPosts();
   }, []);
   return (
-    <div className='p-8 bg-gray-100 min-h-screen'>
-      <div className='container mx-auto space-y-1'>
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            username={post.user.username}
-            community={post.community}
-            title={post.title}
-            content={post.content}
-            commentCount={post.comments.length}
-            avatarUrl={post.user.avatarUrl}
-          />
-        ))}
-      </div>
+    <div className='container mx-auto space-y-1 p-8'>
+      {posts.map((post: PostItem) => (
+        <Post
+          key={post.id}
+          postId={post.id}
+          username={post.user.username}
+          community={post.community}
+          title={post.title}
+          content={post.content}
+          commentCount={post.comments.length}
+        />
+      ))}
     </div>
   );
 }

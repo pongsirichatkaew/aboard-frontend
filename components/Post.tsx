@@ -2,8 +2,10 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface PostProps {
+  postId: number;
   username: string;
   community: string;
   title: string;
@@ -12,9 +14,32 @@ interface PostProps {
   avatarUrl?: string;
 }
 
-const Post: React.FC<PostProps> = ({ username, community, title, content, commentCount, avatarUrl }) => {
+export interface PostUser {
+  id: number;
+  username: string;
+}
+
+export interface PostComments {
+  message: string;
+  user: PostUser;
+}
+export interface PostItem {
+  id: number;
+  title: string;
+  content: string;
+  community: string;
+  user: PostUser;
+  comments: PostComments[];
+}
+
+const Post: React.FC<PostProps> = ({ username, postId, community, title, content, commentCount, avatarUrl }) => {
+  const router = useRouter();
+
+  const redirectToPostDetail = () => {
+    router.push(`posts/${postId}`);
+  };
   return (
-    <div className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer'>
+    <div className='bg-white p-4 md:p-6 rounded-lg shadow-lg space-y-4 md:space-y-0 flex-row md:space-x-6 cursor-pointer' onClick={redirectToPostDetail}>
       <div className='flex flex-col flex-grow'>
         {/* User section */}
         <div className='flex flex-row items-center mt-2 space-x-2'>
