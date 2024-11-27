@@ -1,6 +1,7 @@
 'use client';
 
 import { getPosts } from '@/api/post';
+import Button from '@/components/Button';
 import Post, { PostItem } from '@/components/Post';
 import { useEffect, useState } from 'react';
 
@@ -23,9 +24,7 @@ export default function PostsPage() {
   return (
     <div className='flex flex-col space-y-1 p-8'>
       <div className='flex flex-row-reverse py-4 items-end gap-4'>
-        <button className='bg-success text-white px-4 py-2 rounded-lg hover:bg-green-400' onClick={() => {}}>
-          Create +
-        </button>
+        <Button> Create +</Button>
       </div>
 
       {posts.map((post: PostItem) => (
