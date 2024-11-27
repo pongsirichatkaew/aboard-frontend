@@ -1,7 +1,6 @@
 'use client';
 
 import { getPosts } from '@/api/post';
-import MainNavigation from '@/components/MainNavigation';
 import Post, { PostItem } from '@/components/Post';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +21,13 @@ export default function PostsPage() {
     fetchPosts();
   }, []);
   return (
-    <div className='container mx-auto space-y-1 p-8'>
+    <div className='flex flex-col space-y-1 p-8'>
+      <div className='flex flex-row-reverse py-4 items-end gap-4'>
+        <button className='bg-success text-white px-4 py-2 rounded-lg hover:bg-green-400' onClick={() => {}}>
+          Create +
+        </button>
+      </div>
+
       {posts.map((post: PostItem) => (
         <Post
           key={post.id}

@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
+import Image from 'next/image';
+import Button from '@/components/Button';
 
 const SignInPage = () => {
   const [username, setUsername] = useState('');
@@ -38,11 +40,7 @@ const SignInPage = () => {
             />
           </div>
           {/* Sign In Button */}
-          <button
-            type='submit'
-            className='w-full bg-green-600 px-4 py-2 rounded-lg hover:bg-green-400 text-white transition'>
-            Sign In
-          </button>
+          <Button type='submit'>Sign In</Button>
         </form>
       </div>
 
