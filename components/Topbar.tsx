@@ -6,20 +6,17 @@ import Image from 'next/image';
 import { useAuth } from '../contexts/AuthContext';
 
 const TopBar = () => {
-  const { isSignedIn, userName, signIn, signOut } = useAuth();
+  const { isSignedIn, userName, signOut } = useAuth();
 
   const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const UserProfileItem = () => {
+  const UserProfile = () => {
     return (
       <div className='hidden md:flex items-center space-x-4'>
         {isSignedIn ? (
-          <div className='flex items-center space-x-4'>
-            <span>{userName}</span>
-            <img src='./images/placeholder.jpeg' alt='User Profile' className='w-8 h-8 rounded-full' />
-          </div>
+          <div className='flex items-center space-x-4'>{UserProfileItem()}</div>
         ) : (
           <button
             className='bg-green-600 px-4 py-2 rounded-lg hover:bg-green-400'
@@ -28,6 +25,18 @@ const TopBar = () => {
           </button>
         )}
       </div>
+    );
+  };
+
+  const UserProfileItem = () => {
+    return (
+      <>
+        <span>{userName}</span>
+        <img src='./images/placeholder.jpeg' alt='User Profile' className='w-8 h-8 rounded-full' />
+        <button className='bg-gray-300 text-sm px-4 py-2 rounded-lg hover:bg-gray-100' onClick={() => signOut()}>
+          Sign Out
+        </button>
+      </>
     );
   };
 
@@ -61,10 +70,7 @@ const TopBar = () => {
 
           <div className='flex items-center space-x-4 ml-auto px-6'>
             {isSignedIn ? (
-              <div className='flex items-center text-xl space-x-4'>
-                <span>{userName}</span>
-                <img src='./images/placeholder.jpeg' alt='User Profile' className='w-8 h-8 rounded-full' />
-              </div>
+              <div className='flex items-center text-xl space-x-4'>{UserProfileItem()}</div>
             ) : (
               <button
                 className='bg-green-600 px-4 py-2 rounded-lg hover:bg-green-400'
@@ -112,7 +118,7 @@ const TopBar = () => {
       {HamburgerButton()}
 
       {/* Right: Sign In / User Info */}
-      {UserProfileItem()}
+      {UserProfile()}
 
       {isMenuOpen && HamburgerMenu()}
     </div>
