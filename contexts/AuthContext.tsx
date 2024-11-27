@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import axios from 'axios';
-import { signInAPI } from '@/api/auth';
+import { signInAPI } from '@/api/auth/auth';
 
 interface AuthState {
   isSignedIn: boolean;
@@ -10,7 +10,7 @@ interface AuthState {
   token: string | null;
 }
 
-interface AuthContextType extends AuthState {
+export interface AuthContextType extends AuthState {
   signIn: (username: string) => Promise<void>;
   signOut: () => void;
 }
@@ -21,7 +21,7 @@ const initialAuthState: AuthState = {
   token: null,
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState>(initialAuthState);

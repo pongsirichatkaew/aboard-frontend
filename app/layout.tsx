@@ -1,3 +1,4 @@
+import { PostsProvider } from '@/contexts/PostContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang='en'>
       <body>
         <AuthProvider>
-          <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</main>
+          <PostsProvider>
+            <main className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</main>
+          </PostsProvider>
         </AuthProvider>
       </body>
     </html>

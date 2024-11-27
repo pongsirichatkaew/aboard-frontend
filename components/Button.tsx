@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'normal-text';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   onClick?: () => void;
@@ -15,6 +15,7 @@ const Button: React.FC<ButtonProps> = ({ type = 'button', className = '', onClic
     primary: 'bg-green-600 hover:bg-green-400 text-white',
     secondary: 'bg-gray-600 hover:bg-gray-400 text-white',
     danger: 'bg-red-600 hover:bg-red-400 text-white',
+    'normal-text': 'text-gray-500 hover:text-gray-700'
   };
 
   return (
