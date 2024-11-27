@@ -67,15 +67,10 @@ const AddPostModal = () => {
 
           {/* Modal Footer */}
           <div className='flex justify-end space-x-4'>
-            <button
-              type='button'
-              className='border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50'
-              onClick={handleClose}>
+            <Button onClick={handleClose} variant='border-green'>
               Cancel
-            </button>
-            <button type='submit' className='bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-500'>
-              Post
-            </button>
+            </Button>
+            <Button type='submit'>Post</Button>
           </div>
         </form>
       </Modal>
