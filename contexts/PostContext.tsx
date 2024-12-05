@@ -6,6 +6,7 @@ import { PostRequest } from '@/api/dtos/post-request.dto';
 import { useApi } from '@/api/client';
 import { useAuth } from './AuthContext';
 import { PatchRequest } from '@/api/dtos/patch-request.dto';
+import { useRouter } from 'next/navigation';
 
 interface PostsContextProps {
   posts: PostItem[];
@@ -30,6 +31,7 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   const authProvider = useAuth();
   const token = authProvider.token ?? '';
   const { get, post, patch, remove } = useApi();
+  const router = useRouter();
 
   const fetchPosts = async () => {
     const response = await get('/posts');
@@ -49,6 +51,7 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   const addPost = async (newPost: PostRequest) => {
     await post(`/posts`, newPost, token);
     await fetchPosts();
+    router.refresh();
   };
 
   const editPost = async (id: number, updatePost: PatchRequest) => {

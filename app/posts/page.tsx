@@ -1,16 +1,20 @@
-'use client';
-
-import Post, { PostItem } from '@/app/posts/components/PostCard';
-import { usePosts } from '@/contexts/PostContext';
-import { useEffect } from 'react';
 import AddPostModal from './components/AddEditPostModal';
+import Post, { PostItem } from '@/app/posts/components/PostCard';
 
-export default function PostsPage() {
-  const { posts, fetchPosts } = usePosts();
+async function fetchPosts() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+    cache: 'no-store',
+  });
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  if (!res.ok) {
+    throw new Error('Failed to fetch posts');
+  }
+
+  return res.json();
+}
+
+export default async function PostsPage() {
+  const posts = await fetchPosts();
 
   return (
     <div className='flex flex-col space-y-1 p-8'>
