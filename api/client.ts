@@ -1,5 +1,5 @@
 import { useError } from '@/contexts/ErrorContext';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -7,9 +7,9 @@ const api = axios.create({
 
 export const useApi = () => {
   const { setError } = useError();
-  const get = async (url: string, token?: string) => {
+  const get = async <T>(url: string, token?: string): Promise<AxiosResponse<T> | undefined> => {
     try {
-      const response = await api.get(url, { headers: { Authorization: `Bearer ${token}` } });
+      const response = await api.get<T>(url, { headers: { Authorization: `Bearer ${token}` } });
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'An unexpected error occurred';

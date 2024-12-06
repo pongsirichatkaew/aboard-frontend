@@ -8,6 +8,10 @@ import { useAuth } from './AuthContext';
 import { PatchRequest } from '@/api/dtos/patch-request.dto';
 import { useRouter } from 'next/navigation';
 
+interface PostAxiosResponse {
+  data: PostItem[];
+}
+
 interface PostsContextProps {
   posts: PostItem[];
   fetchPosts: () => Promise<void>;
@@ -34,8 +38,10 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const fetchPosts = async () => {
-    const response = await get('/posts');
-    setPosts(response.data);
+    const response = await get<PostItem[]>('/posts');
+    if (response?.data) {
+      setPosts(response.data);
+    }
   };
 
   const fetchMyPosts = async () => {
